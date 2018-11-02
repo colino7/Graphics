@@ -1,0 +1,22 @@
+Homework 2: Lorenz Attractor
+
+Colin O'Connell
+CSCI4229 Fall 2018
+
+Displays the Lorenz attractor with fun colors and you can make it larger or smaller as well as look from all angles. Use the arrow keys to change the view angles and the +/- keys to zoom in and out. The a/z, s/x, and d/c keys change the lorenz variables which in turn changes the colors dramatically.
+
+Key bindings
+  0         Resets view angle to standard 2D view of 0,0
+  +         Makes the lorenz attractor image larger (increases z/w variable by 0.001), essentially a zoom in
+  -         Makes the lorenz attractor image smaller (decreases z/w variable by 0.001), essentially a zoom out
+  a         Increase the sigma value by 0.1
+  z         Decrease the sigma value by 0.1
+  s         Increase the beta value by 0.01
+  x         Decrease the beta value by 0.01
+  d         Increase the rho value by 0.1
+  c         Decrease the rho value by 0.1
+  r         Reset sigma to 10, beta to 28.6666, and rho to 28 (the original values)
+  Arrows    Changes the view angle
+  ESC       Closes the window
+  
+Time to complete assignment: 5.5 hours

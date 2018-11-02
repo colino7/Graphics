@@ -1,0 +1,21 @@
+Homework 4: Projections
+
+Colin O'Connell
+CSCI4229 Fall 2018
+
+Displays 2 chairs and a bench. You can view in 3 modes: orthogonal, persective, or first person. Use of the arrow keys and other keys for each respective view changes the viewing angles.
+
+Key bindings
+  m         Toggles viewing mode between orthogonal and perspective
+  f         Toggles first-person mode on/off
+  0         Resets view angle to 45,45 (orthogonal and perspective only)
+  Arrows    Changes the view angle (orthogonal and perspective only)
+  +         Zooms in (perspective mode only)
+  -         Zooms out (perspective mode only)
+  i         Moves camera angle 'forward' (first-person only)
+  k         Moves camera angle 'backward' (first-person only)
+  j         Rotates camera angle left (first-person only)
+  l         Rotates camera angle right (first-person only)
+  ESC       Closes the window
+  
+Time to complete assignment: 3.5 hours

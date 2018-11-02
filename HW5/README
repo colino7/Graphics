@@ -1,0 +1,24 @@
+Homework 5: lighting
+
+Colin O'Connell
+CSCI4229 Fall 2018
+
+Displays 2 chairs and a bench. Includes a light revolving around the scene that affect the look of the chairs and bench.
+
+Key bindings
+  l          Toggles lighting
+  a/s        Decrease/increase ambient light
+  d/f        Decrease/increase diffuse light
+  g/h        Decrease/increase specular light
+  j/k        Decrease/increase emitted light
+  z/x        Decrease/increase shininess
+  m          Toggles light movement
+  [/]         Lower/rise light
+  p          Toggles ortogonal/perspective projection
+  +/-        Change field of view of perspective
+  arrows     Change view angle
+  PgDn/PgUp  Zoom in and out
+  0          Reset view angle
+  ESC        Exit
+  
+Time to complete assignment: 7 hours

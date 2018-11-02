@@ -1,0 +1,13 @@
+Homework 3: 3D Objects
+
+Colin O'Connell
+CSCI4229 Fall 2018
+
+Displays 2 chairs, one of normal proportions and one that is elongated, skinnier, and turned. There is also a nice bench in front of them as well. The arrow keys can change the view angle and 0 resets the view angle.
+
+Key bindings
+  0         Resets view angle to standard 2D view of 0,0
+  Arrows    Changes the view angle
+  ESC       Closes the window
+  
+Time to complete assignment: 7 hours
