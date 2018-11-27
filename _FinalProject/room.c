@@ -24,9 +24,74 @@ int shininess = 0;  // Shininess (power of two)
 float shiny = 1;	// Shininess (value)
 int inc = 10;		// Ball increment
 
+int fp = 0;			//  First person
+
+//  Macro for sin & cos in degrees
+#define Cos(th) cos(3.1415926/180*(th))
+#define Sin(th) sin(3.1415926/180*(th))
+
+// rotation variable for first person
+int rotation = 0.0;
+
+// eye coordinates
+double Ex = 0.0;
+double Ey = 0.0;
+double Ez = 5.0;
+
+// camera coordinates
+double Cx = 0.0;
+double Cz = 0.0;
+
 //Texture values
 int mode = 0;    //  Texture mode
 unsigned int texture[2];  //  Texture names
+
+//Draw the room walls
+static void walls() {
+	glBegin(GL_QUADS);
+	/* Floor */
+	glColor3f(0.0, 0.0, 1.0);
+	glVertex3f(-1, -1, -1);
+	glVertex3f(1, -1, -1);
+	glVertex3f(1, -1, 1);
+	glVertex3f(-1, -1, 1);
+	glColor3f(1.0, 0.0, 1.0);
+	
+	/* Ceiling */
+	/*
+	glVertex3f(-1, 1, -1);
+	glVertex3f(1, 1, -1);
+	glVertex3f(1, 1, 1);
+	glVertex3f(-1, 1, 1);
+	glColor3f(0.0, 1.0, 1.0);
+	*/
+	/* Walls */
+	//wall1
+	//glVertex3f(-1, -1, 1);
+	//glVertex3f(1, -1, 1);
+	//glVertex3f(1, 1, 1);
+	//glVertex3f(-1, 1, 1);
+
+	//wall2
+	glVertex3f(-1, -1, -1);
+	glVertex3f(1, -1, -1);
+	glVertex3f(1, 1, -1);
+	glVertex3f(-1, 1, -1);
+	glColor3f(0.0, 1.0, 1.0);
+	//wall3
+	glVertex3f(1, 1, 1);
+	glVertex3f(1, -1, 1);
+	glVertex3f(1, -1, -1);
+	glVertex3f(1, 1, -1);
+	glColor3f(1.0, 1.0, 1.0);
+	//wall4
+	glVertex3f(-1, 1, 1);
+	glVertex3f(-1, -1, 1);
+	glVertex3f(-1, -1, -1);
+	glVertex3f(-1, 1, -1);
+
+	glEnd();
+}
 
 //Draw a chair object (with updated Normals)
 static void chair(double x, double y, double z, double dx, double dy, double dz, double th) {
@@ -609,11 +674,13 @@ void display()
 		glDisable(GL_LIGHTING);
 
 	//Draw the first normal chair
-	chair(0, 0, 0, 1, 1, 1, 0);
+	//chair(0, 0, 0, 1, 1, 1, 0);
 	//Draw the second smaller, offset chair
-	chair(1.5, -0.35, 1.5, 0.4, 0.75, 0.5, -30);
+	//chair(1.5, -0.35, 1.5, 0.4, 0.75, 0.5, -30);
 	//Draw bench item
-	bench(-2, 0, 1.5, 4, 1, 1, 0);
+	//bench(-2, 0, 1.5, 4, 1, 1, 0);
+
+	walls();
 
 	ErrCheck("display");
 
@@ -751,7 +818,7 @@ int main(int argc, char* argv[])
 	glutInitWindowSize(600, 600);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
 	//  Create the window
-	glutCreateWindow("Assignment 6: Colin O'Connell");
+	glutCreateWindow("The Living Room");
 	//  Tell GLUT to call "display" when the scene should be drawn
 	glutDisplayFunc(display);
 	//  Tell GLUT to call "reshape" when the window is resized
@@ -762,8 +829,6 @@ int main(int argc, char* argv[])
 	glutKeyboardFunc(key);
 	glutIdleFunc(idle);
 	//Load textures
-	texture[0] = LoadTexBMP("vector-wood-texture.bmp");
-	texture[1] = LoadTexBMP("dark-wood.bmp");
 	//  Pass control to GLUT so it can interact with the user
 	ErrCheck("init");
 	glutMainLoop();
