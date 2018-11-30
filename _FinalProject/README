@@ -1,10 +1,13 @@
-Final Project
+Final Project - Living Room
 
 Colin O'Connell
 CSCI4229 Fall 2018
 
+To run, you can do a normal make.
 
 Key bindings
-  ESC        Exit
+  ESC           Exit
+  arrows        Change view angle
+  PgDn/PgUp     Zoom in and out
   
-Time to complete:
+Notes: I realize I haven't done much. I don't have the walls up right now just so I can focus on the objects and right now the tv isn't working quite right. I still plan on putting in a lot more detailed objects like an armchair (in progess), tables with lamps, tv (in progress), pictures, and other miscellaneous items. I also need to integrate first person collisions.
