@@ -28,6 +28,8 @@ int inc = 10;		// Ball increment
 
 int fp = 0;			//  First person
 
+int tv_on = 0;
+
 //  Macro for sin & cos in degrees
 #define Cos(th) cos(3.1415926/180*(th))
 #define Sin(th) sin(3.1415926/180*(th))
@@ -46,7 +48,7 @@ double Cz = 0.0;
 
 //Texture values
 int mode = 0;    //  Texture mode
-unsigned int texture[5];  //  Texture names
+unsigned int texture[7];  //  Texture names
 
 //Draw the room walls
 static void walls() {
@@ -92,6 +94,7 @@ static void walls() {
 	glColor3f(1.0, 1.0, 1.0);
 	*/
 	//Back wall
+	/*
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	glTexCoord2f(0, 0); glVertex3f(-500, 0, -500);
 	glTexCoord2f(1, 0); glVertex3f(500, 0, -500);
@@ -113,7 +116,7 @@ static void walls() {
 	glTexCoord2f(1, 0); glVertex3f(-500, 0, 500);
 	glTexCoord2f(1, 1); glVertex3f(-500, 0, -500);
 	glTexCoord2f(0, 1); glVertex3f(-500, 500, -500);
-
+	*/
 	glEnd();
 }
 
@@ -452,22 +455,88 @@ static void seat(double x, double y, double z, double dx, double dy, double dz, 
 }
 
 
-static void tv() {
+static void tv(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
+	
+	//  Set specular color to white
+	float white[] = { 1,1,1,1 };
+	float black[] = { 0,0,0,1 };
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
 
-	glBindTexture(GL_TEXTURE_2D, texture[2]);
-	glColor3d(0.421875, 0.421875, 0.421875);
-	glPushMatrix();
-	points(40, 35, 10);
-	glTranslated(0, -2, -30);
-	points(36, 33, 20);
-	glTranslated(0, 2, 40);
-	glBindTexture(GL_TEXTURE_2D, texture[3]);
-	glColor3d(.5, .5, .5);
-	points4(32, 30, 1);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslated(0, 33, -30);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	// Translations
+	glTranslated(x, y, z);
+	glRotated(th, rx, ry, rz);
+	glScaled(dx, dy, dz);
+
+	//Enable textures
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	if (tv_on) {
+		glBindTexture(GL_TEXTURE_2D, texture[3]);
+	}
+	else {
+		glBindTexture(GL_TEXTURE_2D, texture[6]);
+	}
+
+	glBegin(GL_QUADS);
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	//Back side
+	glNormal3f(0.0f, 0.0f, -1.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-52, 6, -57);
+	glTexCoord2f(1, 0); glVertex3f(52, 6, -57);
+	glTexCoord2f(1, 1); glVertex3f(52, 100, -57);
+	glTexCoord2f(0, 1); glVertex3f(-52, 100, -57);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[5]);
+	glBegin(GL_QUADS);
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	//Front side
+	glNormal3f(0.0f, 0.0f, 1.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-52, 6, -52);
+	glTexCoord2f(1, 0); glVertex3f(52, 6, -52);
+	glTexCoord2f(1, 1); glVertex3f(52, 100, -52);
+	glTexCoord2f(0, 1); glVertex3f(-52, 100, -52);
+
+
+	//Left side
+	glNormal3f(-1.0f, 0.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-52, 6, -57);
+	glTexCoord2f(1, 0); glVertex3f(-52, 100, -57);
+	glTexCoord2f(1, 1); glVertex3f(-52, 100, -52);
+	glTexCoord2f(0, 1); glVertex3f(-52, 6, -52);
+
+	//Right side
+	glNormal3f(1.0f, 0.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(52, 6, -57);
+	glTexCoord2f(1, 0); glVertex3f(52, 100, -57);
+	glTexCoord2f(1, 1); glVertex3f(52, 100, -52);
+	glTexCoord2f(0, 1); glVertex3f(52, 6, -52);
+
+	//Top
+	glNormal3f(0.0f, 1.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-52, 100, -57);
+	glTexCoord2f(1, 0); glVertex3f(-52, 100, -52);
+	glTexCoord2f(1, 1); glVertex3f(52, 100, -52);
+	glTexCoord2f(0, 1); glVertex3f(52, 100, -57);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
 }
 
 /*
@@ -572,8 +641,8 @@ void display()
 	couch(-100, 37.5, 0, 3, 1, 1.5, 0, 0, 0, 0);
 	seat(100, -20, -27.5, 0.5, 1, 1, 95, 1, 0, 0);
 	tvstand(-100, -300, -35, 2, 1, 0.75, 95, 1, 0, 0);
-	
-	//tv();
+	tv(0, -3.5, 40, 0.75 , 1, 0.75, 0, 0, 0, 0);
+
 	ErrCheck("display");
 
 	//  Render the scene
@@ -613,10 +682,10 @@ void special(int key, int x, int y)
 		ph -= 5;
 	//  PageUp key - increase dim
 	else if (key == GLUT_KEY_PAGE_DOWN)
-		dim += 2;
+		dim += 5;
 	//  PageDown key - decrease dim
 	else if (key == GLUT_KEY_PAGE_UP && dim > 1)
-		dim -= 2;
+		dim -= 5;
 	//  Keep angles to +/-360 degrees
 	th %= 360;
 	ph %= 360;
@@ -640,6 +709,9 @@ void key(unsigned char ch, int x, int y)
 	//  Toggle lighting
 	else if (ch == 'l')
 		light = 1 - light;
+	//  Toggle the tv
+	else if (ch == 't')
+		tv_on = 1 - tv_on;
 	//  Toggle texture mode
    else if (ch == 't')
       mode = 1-mode;
@@ -726,6 +798,8 @@ int main(int argc, char* argv[])
 	texture[2] = LoadTexBMP("tv.bmp");
 	texture[3] = LoadTexBMP("the-office.bmp");
 	texture[4] = LoadTexBMP("vector-wood-texture.bmp");
+	texture[5] = LoadTexBMP("black_metal.bmp");
+	texture[6] = LoadTexBMP("tv_screen.bmp");
 	//  Pass control to GLUT so it can interact with the user
 	ErrCheck("init");
 	glutMainLoop();
