@@ -46,52 +46,73 @@ double Cz = 0.0;
 
 //Texture values
 int mode = 0;    //  Texture mode
-unsigned int texture[4];  //  Texture names
+unsigned int texture[5];  //  Texture names
 
 //Draw the room walls
 static void walls() {
-	glScaled(3, 2, 1);
+	//glScaled(3, 2, 1);
+	
+	
+	
+	//Enable textures
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+
 	glBegin(GL_QUADS);
+
 	/* Floor */
+	
 	glColor3f(1.0, 1.0, 1.0);
-	glVertex3f(-100, -100, -100);
-	glVertex3f(100, -100, -100);
-	glVertex3f(100, -100, 100);
-	glVertex3f(-100, -100, 100);
+	glNormal3f(0.0f, 1.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(-500, 0, -500);
+	glTexCoord2f(1, 0); glVertex3f(500, 0, -500);
+	glTexCoord2f(1, 1); glVertex3f(500, 0, 500);
+	glTexCoord2f(0, 1); glVertex3f(-500, 0, 500);
 	glColor3f(1.0, 0.0, 1.0);
 	
 	/* Ceiling */
-	
-	//glVertex3f(-1, 1, -1);
-	//glVertex3f(1, 1, -1);
-	//glVertex3f(1, 1, 1);
-	//glVertex3f(-1, 1, 1);
-	//glColor3f(0.0, 1.0, 1.0);
-	
+	/*
+	glNormal3f(0.0f, -1.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(-500, 500, -500);
+	glTexCoord2f(1, 0); glVertex3f(500, 500, -500);
+	glTexCoord2f(1, 1); glVertex3f(500, 500, 500);
+	glTexCoord2f(0, 1); glVertex3f(-500, 500, 500);
+	glColor3f(0.0, 1.0, 1.0);
+	*/
 	/* Walls */
 	//front wall
-	//glVertex3f(-1, -1, 1);
-	//glVertex3f(1, -1, 1);
-	//glVertex3f(1, 1, 1);
-	//glVertex3f(-1, 1, 1);
+	/*
+	glNormal3f(0.0f, 0.0f, -1.0f);
+	glTexCoord2f(0, 0); glVertex3f(-500, 0, 500);
+	glTexCoord2f(1, 0); glVertex3f(500, 0, 500);
+	glTexCoord2f(1, 1); glVertex3f(500, 500, 500);
+	glTexCoord2f(0, 1); glVertex3f(-500, 500, 500);
 	glColor3f(1.0, 1.0, 1.0);
+	*/
 	//Back wall
-	glVertex3f(-100, -100, -100);
-	glVertex3f(100, -100, -100);
-	glVertex3f(100, 100, -100);
-	glVertex3f(-100, 100, -100);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(0, 0); glVertex3f(-500, 0, -500);
+	glTexCoord2f(1, 0); glVertex3f(500, 0, -500);
+	glTexCoord2f(1, 1); glVertex3f(500, 500, -500);
+	glTexCoord2f(0, 1); glVertex3f(-500, 500, -500);
 	glColor3f(0.0, 1.0, 1.0);
+
 	//Right wall
-	glVertex3f(100, 100, 100);
-	glVertex3f(100, -100, 100);
-	glVertex3f(100, -100, -100);
-	glVertex3f(100, 100, -100);
+	glNormal3f(-1.0f, 0.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(500, 500, 500);
+	glTexCoord2f(1, 0); glVertex3f(500, 0, 500);
+	glTexCoord2f(1, 1); glVertex3f(500, 0, -500);
+	glTexCoord2f(0, 1); glVertex3f(500, 500, -500);
 	glColor3f(1.0, 1.0, 1.0);
+
 	//Left wall
-	glVertex3f(-100, 100, 100);
-	glVertex3f(-100, -100, 100);
-	glVertex3f(-100, -100, -100);
-	glVertex3f(-100, 100, -100);
+	glNormal3f(1.0f, 0.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(-500, 500, 500);
+	glTexCoord2f(1, 0); glVertex3f(-500, 0, 500);
+	glTexCoord2f(1, 1); glVertex3f(-500, 0, -500);
+	glTexCoord2f(0, 1); glVertex3f(-500, 500, -500);
 
 	glEnd();
 }
@@ -500,9 +521,9 @@ void display()
 	else
 		glDisable(GL_LIGHTING);
 
-	//walls();
-	couch(0, 0, 0, 3, 1, 1.5, 0, 0, 0, 0);
-	tvstand(0, -300, -35, 1, 1, 1, 95, 1, 0, 0);
+	walls();
+	couch(0, 37.5, 0, 3, 1, 1.5, 0, 0, 0, 0);
+	tvstand(0, -240, -35, 1, 1, 1, 95, 1, 0, 0);
 	//tv();
 	//couch(0, -100, 0, 1, 1, 1, 0, 0, 0, 0);
 	ErrCheck("display");
@@ -656,7 +677,7 @@ int main(int argc, char* argv[])
 	texture[1] = LoadTexBMP("cushion2.bmp");
 	texture[2] = LoadTexBMP("tv.bmp");
 	texture[3] = LoadTexBMP("the-office.bmp");
-	//texture[1] = LoadTexBMP("dark-wood.bmp");
+	texture[4] = LoadTexBMP("vector-wood-texture.bmp");
 	//  Pass control to GLUT so it can interact with the user
 	ErrCheck("init");
 	glutMainLoop();
