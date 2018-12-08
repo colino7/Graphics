@@ -406,6 +406,52 @@ static void couch(double x, double y, double z, double dx, double dy, double dz,
 
 }
 
+
+static void seat(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
+	double h = 37;
+	double l = 40;
+	double c = 7;
+
+	double a = 5;
+
+	glTranslated(x, y, z);
+	glRotated(th, rx, ry, rz);
+	glScaled(dx, dy, dz);
+
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+
+	glColor3d(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glTranslated(-l - 2, 0, 0);
+	points(2, h, h);
+	glTranslated(2 * l + 4, 0, 0);
+	points(2, h, h);
+	glTranslated(-l - 2, 0, 0);
+	glRotated(a, -1, 0, 0);
+	int i = 10;
+	glTranslated(0, -1, i - 10);
+	points(l, 2, h - i);
+
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	glTranslated(0, c, 3);
+	points(l - 1, c, h - i - 4);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glTranslated(0, -c, -3);
+
+	glTranslated(0, h - i, -(h - i) + 2);
+	glRotated(90, -1, 0, 0);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	points(l, 2, h - i);
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	glTranslated(0, -c, 3);
+	points(l - 1, c, h - i - 4);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+}
+
+
 static void tv() {
 
 	glBindTexture(GL_TEXTURE_2D, texture[2]);
@@ -522,10 +568,12 @@ void display()
 		glDisable(GL_LIGHTING);
 
 	walls();
-	couch(0, 37.5, 0, 3, 1, 1.5, 0, 0, 0, 0);
-	tvstand(0, -240, -35, 1, 1, 1, 95, 1, 0, 0);
+
+	couch(-100, 37.5, 0, 3, 1, 1.5, 0, 0, 0, 0);
+	seat(100, -20, -27.5, 0.5, 1, 1, 95, 1, 0, 0);
+	tvstand(-100, -300, -35, 2, 1, 0.75, 95, 1, 0, 0);
+	
 	//tv();
-	//couch(0, -100, 0, 1, 1, 1, 0, 0, 0, 0);
 	ErrCheck("display");
 
 	//  Render the scene
