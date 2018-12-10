@@ -13,7 +13,7 @@ double dim = 500.0;   //  Size of world
 
 // Light values
 int one = 1;		// Unit value
-int distance = 600;	// Light distance
+int distance = 800;	// Light distance
 int smooth = 1;		// Smooth/Flat shading
 int local = 0;		// Local Viewer Model
 int ambient = 30;	// Ambient intensity (%)
@@ -29,6 +29,7 @@ int inc = 10;		// Ball increment
 int fp = 0;			//  First person
 
 int tv_on = 0;
+int w = 0;
 
 //  Macro for sin & cos in degrees
 #define Cos(th) cos(3.1415926/180*(th))
@@ -75,48 +76,48 @@ static void walls() {
 	glColor3f(1.0, 0.0, 1.0);
 	
 	/* Ceiling */
-	/*
-	glNormal3f(0.0f, -1.0f, 0.0f);
-	glTexCoord2f(0, 0); glVertex3f(-500, 500, -500);
-	glTexCoord2f(1, 0); glVertex3f(500, 500, -500);
-	glTexCoord2f(1, 1); glVertex3f(500, 500, 500);
-	glTexCoord2f(0, 1); glVertex3f(-500, 500, 500);
-	glColor3f(0.0, 1.0, 1.0);
-	*/
-	/* Walls */
-	//front wall
-	/*
-	glNormal3f(0.0f, 0.0f, -1.0f);
-	glTexCoord2f(0, 0); glVertex3f(-500, 0, 500);
-	glTexCoord2f(1, 0); glVertex3f(500, 0, 500);
-	glTexCoord2f(1, 1); glVertex3f(500, 500, 500);
-	glTexCoord2f(0, 1); glVertex3f(-500, 500, 500);
-	glColor3f(1.0, 1.0, 1.0);
-	*/
-	//Back wall
-	/*
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	glTexCoord2f(0, 0); glVertex3f(-500, 0, -500);
-	glTexCoord2f(1, 0); glVertex3f(500, 0, -500);
-	glTexCoord2f(1, 1); glVertex3f(500, 500, -500);
-	glTexCoord2f(0, 1); glVertex3f(-500, 500, -500);
-	glColor3f(0.0, 1.0, 1.0);
+	if(w){
+		glNormal3f(0.0f, -1.0f, 0.0f);
+		glTexCoord2f(0, 0); glVertex3f(-500, 500, -500);
+		glTexCoord2f(1, 0); glVertex3f(500, 500, -500);
+		glTexCoord2f(1, 1); glVertex3f(500, 500, 500);
+		glTexCoord2f(0, 1); glVertex3f(-500, 500, 500);
+		glColor3f(0.0, 1.0, 1.0);
+		
+		/* Walls */
+		//front wall
+	
+		glNormal3f(0.0f, 0.0f, -1.0f);
+		glTexCoord2f(0, 0); glVertex3f(-500, 0, 500);
+		glTexCoord2f(1, 0); glVertex3f(500, 0, 500);
+		glTexCoord2f(1, 1); glVertex3f(500, 500, 500);
+		glTexCoord2f(0, 1); glVertex3f(-500, 500, 500);
+		glColor3f(1.0, 1.0, 1.0);
+	
+		//Back wall
+	
+		glNormal3f(0.0f, 0.0f, 1.0f);
+		glTexCoord2f(0, 0); glVertex3f(-500, 0, -500);
+		glTexCoord2f(1, 0); glVertex3f(500, 0, -500);
+		glTexCoord2f(1, 1); glVertex3f(500, 500, -500);
+		glTexCoord2f(0, 1); glVertex3f(-500, 500, -500);
+		glColor3f(0.0, 1.0, 1.0);
 
-	//Right wall
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glTexCoord2f(0, 0); glVertex3f(500, 500, 500);
-	glTexCoord2f(1, 0); glVertex3f(500, 0, 500);
-	glTexCoord2f(1, 1); glVertex3f(500, 0, -500);
-	glTexCoord2f(0, 1); glVertex3f(500, 500, -500);
-	glColor3f(1.0, 1.0, 1.0);
+		//Right wall
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		glTexCoord2f(0, 0); glVertex3f(500, 500, 500);
+		glTexCoord2f(1, 0); glVertex3f(500, 0, 500);
+		glTexCoord2f(1, 1); glVertex3f(500, 0, -500);
+		glTexCoord2f(0, 1); glVertex3f(500, 500, -500);
+		glColor3f(1.0, 1.0, 1.0);
 
-	//Left wall
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glTexCoord2f(0, 0); glVertex3f(-500, 500, 500);
-	glTexCoord2f(1, 0); glVertex3f(-500, 0, 500);
-	glTexCoord2f(1, 1); glVertex3f(-500, 0, -500);
-	glTexCoord2f(0, 1); glVertex3f(-500, 500, -500);
-	*/
+		//Left wall
+		glNormal3f(1.0f, 0.0f, 0.0f);
+		glTexCoord2f(0, 0); glVertex3f(-500, 500, 500);
+		glTexCoord2f(1, 0); glVertex3f(-500, 0, 500);
+		glTexCoord2f(1, 1); glVertex3f(-500, 0, -500);
+		glTexCoord2f(0, 1); glVertex3f(-500, 500, -500);
+	}
 	glEnd();
 }
 
@@ -251,7 +252,7 @@ static void points3(float x, float y, float z, float cant) {
 
 	glEnd();
 }
-
+/*
 static void points4(double x, double y, double z) {
 	glBegin(GL_QUADS);
 	glNormal3d(0, 0, 1);
@@ -315,7 +316,7 @@ static void points4(double x, double y, double z) {
 	glVertex3d(-x, -y, z);
 	glEnd();
 }
-
+*/
 static void tvstand(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 
 	glTranslated(x, y, z);
@@ -539,6 +540,53 @@ static void tv(double x, double y, double z, double dx, double dy, double dz, do
 	glDisable(GL_TEXTURE_2D);
 }
 
+void p(double h){
+	GLUquadric *q = gluNewQuadric();
+	gluQuadricTexture(q, GL_TRUE);
+	glTranslated(0, -h, 0);
+	glRotated(90, -1, 0, 0);
+	gluCylinder(q, 5, 8, 2 * h, 20, 20);
+	glRotated(-90, -1, 0, 0);
+	glTranslated(0, h, 0);
+	gluDeleteQuadric(q);
+}
+
+static void table(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
+
+	// Translations
+	glTranslated(x, y, z);
+	glRotated(th, rx, ry, rz);
+	glScaled(dx, dy, dz);
+
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glColor3d(.3, .3, .3);
+	double h = 45;
+	glPushMatrix();
+	glTranslated(-40, 0, -90);
+	p(h);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(40, 0, -90);
+	p(h);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(-40, 0, 90);
+	p(h);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(40, 0, 90);
+	p(h);
+	glPopMatrix();
+
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glTranslated(0, h, 0);
+	glColor3d(.6, 1, .6);
+	points(50, h / 10, 100);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glColor3d(1, 1, 1);
+
+}
+
 /*
  *  Draw vertex in polar coordinates with normal
  */
@@ -642,6 +690,7 @@ void display()
 	seat(100, -20, -27.5, 0.5, 1, 1, 95, 1, 0, 0);
 	tvstand(-100, -300, -35, 2, 1, 0.75, 95, 1, 0, 0);
 	tv(0, -3.5, 40, 0.75 , 1, 0.75, 0, 0, 0, 0);
+	table(0, 0, -900, 0.75, 1, 0.75, 0, 0, 0, 0);
 
 	ErrCheck("display");
 
@@ -712,6 +761,9 @@ void key(unsigned char ch, int x, int y)
 	//  Toggle the tv
 	else if (ch == 't')
 		tv_on = 1 - tv_on;
+	//  Toggle the walls
+	else if (ch == 'w')
+		w = 1 - w;
 	//  Toggle texture mode
    else if (ch == 't')
       mode = 1-mode;
