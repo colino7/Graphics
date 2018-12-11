@@ -20,7 +20,7 @@ int ambient = 30;	// Ambient intensity (%)
 int diffuse = 100;  // Diffuse intensity (%)
 int specular = 0;	// Specular intensity (%)
 int zh = 90;		// Light azimuth
-float ylight = 0;	// Elevation of light
+float ylight = 100;	// Elevation of light
 int emission = 0;	// Emission intensity (%)
 int shininess = 0;  // Shininess (power of two)
 float shiny = 1;	// Shininess (value)
@@ -49,19 +49,16 @@ double Cz = 0.0;
 
 //Texture values
 int mode = 0;    //  Texture mode
-unsigned int texture[10];  //  Texture names
+unsigned int texture[12];  //  Texture names
 
 //Draw the room walls
 static void walls() {
-	//glScaled(3, 2, 1);
-	
-	
 	
 	//Enable textures
 	glEnable(GL_TEXTURE_2D);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
 	glColor3f(1, 1, 1);
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glBindTexture(GL_TEXTURE_2D, texture[11]);
 
 	glBegin(GL_QUADS);
 
@@ -74,9 +71,19 @@ static void walls() {
 	glTexCoord2f(1, 1); glVertex3f(500, 0, 500);
 	glTexCoord2f(0, 1); glVertex3f(-500, 0, 500);
 	glColor3f(1.0, 0.0, 1.0);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
 	
 	/* Ceiling */
 	if(w){
+		glEnable(GL_TEXTURE_2D);
+		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+		glColor3f(1, 1, 1);
+		glBindTexture(GL_TEXTURE_2D, texture[10]);
+
+		glBegin(GL_QUADS);
+
 		glNormal3f(0.0f, -1.0f, 0.0f);
 		glTexCoord2f(0, 0); glVertex3f(-500, 500, -500);
 		glTexCoord2f(1, 0); glVertex3f(500, 500, -500);
@@ -117,8 +124,86 @@ static void walls() {
 		glTexCoord2f(1, 0); glVertex3f(-500, 0, 500);
 		glTexCoord2f(1, 1); glVertex3f(-500, 0, -500);
 		glTexCoord2f(0, 1); glVertex3f(-500, 500, -500);
+
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
 	}
+}
+
+static void o_walls() {
+
+	//Enable textures
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+
+	glBegin(GL_QUADS);
+
+	/* Floor */
+
+	glColor3f(1.0, 1.0, 1.0);
+	glNormal3f(0.0f, 1.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(-505, -5, -505);
+	glTexCoord2f(1, 0); glVertex3f(505, -5, -505);
+	glTexCoord2f(1, 1); glVertex3f(505, -5, 505);
+	glTexCoord2f(0, 1); glVertex3f(-505, -5, 505);
+	glColor3f(1.0, 0.0, 1.0);
+
 	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
+	/* Ceiling */
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+
+	glBegin(GL_QUADS);
+
+	glNormal3f(0.0f, -1.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(-505, 505, -505);
+	glTexCoord2f(1, 0); glVertex3f(505, 505, -505);
+	glTexCoord2f(1, 1); glVertex3f(505, 505, 505);
+	glTexCoord2f(0, 1); glVertex3f(-505, 505, 505);
+	glColor3f(0.0, 1.0, 1.0);
+
+	/* Walls */
+	//front wall
+
+	glNormal3f(0.0f, 0.0f, -1.0f);
+	glTexCoord2f(0, 0); glVertex3f(-505, -5, 505);
+	glTexCoord2f(1, 0); glVertex3f(505, -5, 505);
+	glTexCoord2f(1, 1); glVertex3f(505, 505, 505);
+	glTexCoord2f(0, 1); glVertex3f(-505, 505, 505);
+	glColor3f(1.0, 1.0, 1.0);
+
+	//Back wall
+
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(0, 0); glVertex3f(-505, -5, -505);
+	glTexCoord2f(1, 0); glVertex3f(505, -5, -505);
+	glTexCoord2f(1, 1); glVertex3f(505, 505, -505);
+	glTexCoord2f(0, 1); glVertex3f(-505, 505, -505);
+	glColor3f(0.0, 1.0, 1.0);
+
+	//Right wall
+	glNormal3f(-1.0f, 0.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(505, 505, 505);
+	glTexCoord2f(1, 0); glVertex3f(505, -5, 505);
+	glTexCoord2f(1, 1); glVertex3f(505, -5, -505);
+	glTexCoord2f(0, 1); glVertex3f(505, 505, -505);
+	glColor3f(1.0, 1.0, 1.0);
+
+	//Left wall
+	glNormal3f(1.0f, 0.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(-505, 505, 505);
+	glTexCoord2f(1, 0); glVertex3f(-505, -5, 505);
+	glTexCoord2f(1, 1); glVertex3f(-505, -5, -505);
+	glTexCoord2f(0, 1); glVertex3f(-505, 505, -505);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
 }
 
 static void points(double x, double y, double z) {
@@ -556,7 +641,6 @@ static void table(double x, double y, double z, double dx, double dy, double dz,
 	glRotated(th, rx, ry, rz);
 	glScaled(dx, dy, dz);
 
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
 	glColor3d(.3, .3, .3);
 	double h = 45;
 	glPushMatrix();
@@ -576,12 +660,16 @@ static void table(double x, double y, double z, double dx, double dy, double dz,
 	p(h);
 	glPopMatrix();
 
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
 	glBindTexture(GL_TEXTURE_2D, texture[8]);
+	glColor3d(1, 1, 1);
 	glTranslated(0, h, 0);
 	glColor3d(.6, 1, .6);
 	points(50, h / 10, 100);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glColor3d(1, 1, 1);
+
+	glDisable(GL_TEXTURE_2D);
 
 }
 
@@ -745,6 +833,45 @@ static void bookcase(double x, double y, double z, double dx, double dy, double 
 	glDisable(GL_TEXTURE_2D);
 }
 
+static void smalltable(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
+
+	// Translations
+	glTranslated(x, y, z);
+	glRotated(th, rx, ry, rz);
+	glScaled(dx, dy, dz);
+
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+
+	glColor3d(1, 1, 1);
+	double h = 30;
+	glPushMatrix();
+	glTranslated(-40, 0, -90);
+	p(h);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(40, 0, -90);
+	p(h);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(-40, 0, 90);
+	p(h);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(40, 0, 90);
+	p(h);
+	glPopMatrix();
+
+	glTranslated(0, h, 0);
+	glColor3d(1, 1, 1);
+	points(50, h / 10, 100);
+
+	glDisable(GL_TEXTURE_2D);
+
+}
+
 /*
  *  Draw vertex in polar coordinates with normal
  */
@@ -843,6 +970,7 @@ void display()
 		glDisable(GL_LIGHTING);
 
 	walls();
+	if (w) { o_walls(); }
 
 	couch(-100, 37.5, 0, 3, 1, 1.5, 0, 0, 0, 0);
 	seat(100, -20, -27.5, 0.5, 1, 1, 95, 1, 0, 0);
@@ -851,7 +979,7 @@ void display()
 	table(0, -9, -900, 1.5, 1, 1, 0, 0, 0, 0);
 	net(10, 0, 0, 1, 1, 1, 90, 0, 1, 0);
 	bookcase(285, -110, -25, 1, 1, 1, 90, 0, 1, 0);
-
+	smalltable(85, 50, -625, 0.25, 1, 0.5, 0, 0, 0, 0);
 
 	ErrCheck("display");
 
@@ -1016,6 +1144,8 @@ int main(int argc, char* argv[])
 	texture[7] = LoadTexBMP("net.bmp");
 	texture[8] = LoadTexBMP("pingtable.bmp");
 	texture[9] = LoadTexBMP("bookshelf.bmp");
+	texture[10] = LoadTexBMP("wall.bmp");
+	texture[11] = LoadTexBMP("hardwood-floor.bmp");
 	//  Pass control to GLUT so it can interact with the user
 	ErrCheck("init");
 	glutMainLoop();
