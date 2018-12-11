@@ -49,7 +49,7 @@ double Cz = 0.0;
 
 //Texture values
 int mode = 0;    //  Texture mode
-unsigned int texture[7];  //  Texture names
+unsigned int texture[9];  //  Texture names
 
 //Draw the room walls
 static void walls() {
@@ -578,13 +578,87 @@ static void table(double x, double y, double z, double dx, double dy, double dz,
 	p(h);
 	glPopMatrix();
 
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glBindTexture(GL_TEXTURE_2D, texture[8]);
 	glTranslated(0, h, 0);
 	glColor3d(.6, 1, .6);
 	points(50, h / 10, 100);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glColor3d(1, 1, 1);
 
+}
+
+static void net(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
+	//  Set specular color to white
+	float white[] = { 1,1,1,1 };
+	float black[] = { 0,0,0,1 };
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
+
+	// Translations
+	glTranslated(x, y, z);
+	glRotated(th, rx, ry, rz);
+	glScaled(dx, dy, dz);
+
+	//Enable textures
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[7]);
+
+	glBegin(GL_QUADS);
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	int x1 = 100;
+	int y1 = 6;
+	int y2 = 40;
+	int z1 = 10;
+	int z2 = 10.5;
+
+	//Back side
+	glNormal3f(0.0f, 0.0f, -1.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y1, -z2);
+	glTexCoord2f(5, 0); glVertex3f(x1, y1, -z2);
+	glTexCoord2f(5, 1); glVertex3f(x1, y2, -z2);
+	glTexCoord2f(0, 1); glVertex3f(-x1, y2, -z2);
+
+	//Front side
+	glNormal3f(0.0f, 0.0f, 1.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y1, -z1);
+	glTexCoord2f(5, 0); glVertex3f(x1, y1, -z1);
+	glTexCoord2f(5, 1); glVertex3f(x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(-x1, y2, -z1);
+
+
+	//Left side
+	glNormal3f(-1.0f, 0.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y1, -z2);
+	glTexCoord2f(1, 0); glVertex3f(-x1, y2, -z2);
+	glTexCoord2f(1, 1); glVertex3f(-x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(-x1, y1, -z1);
+
+	//Right side
+	glNormal3f(1.0f, 0.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(x1, y1, -z2);
+	glTexCoord2f(1, 0); glVertex3f(x1, y2, -z2);
+	glTexCoord2f(1, 1); glVertex3f(x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(x1, y1, -z1);
+
+	//Top
+	glNormal3f(0.0f, 1.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y2, -z2);
+	glTexCoord2f(1, 0); glVertex3f(-x1, y2, -z1);
+	glTexCoord2f(1, 1); glVertex3f(x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(x1, y2, -z2);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
 }
 
 /*
@@ -690,7 +764,8 @@ void display()
 	seat(100, -20, -27.5, 0.5, 1, 1, 95, 1, 0, 0);
 	tvstand(-100, -300, -35, 2, 1, 0.75, 95, 1, 0, 0);
 	tv(0, -3.5, 40, 0.75 , 1, 0.75, 0, 0, 0, 0);
-	table(0, 0, -900, 0.75, 1, 0.75, 0, 0, 0, 0);
+	table(0, -9, -900, 1.5, 1, 1, 0, 0, 0, 0);
+	net(10, 0, 0, 1, 1, 1, 90, 0, 1, 0);
 
 	ErrCheck("display");
 
@@ -852,6 +927,8 @@ int main(int argc, char* argv[])
 	texture[4] = LoadTexBMP("vector-wood-texture.bmp");
 	texture[5] = LoadTexBMP("black_metal.bmp");
 	texture[6] = LoadTexBMP("tv_screen.bmp");
+	texture[7] = LoadTexBMP("net.bmp");
+	texture[8] = LoadTexBMP("pingtable.bmp");
 	//  Pass control to GLUT so it can interact with the user
 	ErrCheck("init");
 	glutMainLoop();
