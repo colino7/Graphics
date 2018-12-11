@@ -49,7 +49,7 @@ double Cz = 0.0;
 
 //Texture values
 int mode = 0;    //  Texture mode
-unsigned int texture[12];  //  Texture names
+unsigned int texture[16];  //  Texture names
 
 //Draw the room walls
 static void walls() {
@@ -70,12 +70,12 @@ static void walls() {
 	glTexCoord2f(1, 0); glVertex3f(500, 0, -500);
 	glTexCoord2f(1, 1); glVertex3f(500, 0, 500);
 	glTexCoord2f(0, 1); glVertex3f(-500, 0, 500);
-	glColor3f(1.0, 0.0, 1.0);
+	glColor3f(1.0, 1.0, 1.0);
 
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	
-	/* Ceiling */
+	
 	if(w){
 		glEnable(GL_TEXTURE_2D);
 		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
@@ -84,12 +84,13 @@ static void walls() {
 
 		glBegin(GL_QUADS);
 
+		/* Ceiling */
 		glNormal3f(0.0f, -1.0f, 0.0f);
 		glTexCoord2f(0, 0); glVertex3f(-500, 500, -500);
 		glTexCoord2f(1, 0); glVertex3f(500, 500, -500);
 		glTexCoord2f(1, 1); glVertex3f(500, 500, 500);
 		glTexCoord2f(0, 1); glVertex3f(-500, 500, 500);
-		glColor3f(0.0, 1.0, 1.0);
+		glColor3f(1.0, 1.0, 1.0);
 		
 		/* Walls */
 		//front wall
@@ -108,7 +109,7 @@ static void walls() {
 		glTexCoord2f(1, 0); glVertex3f(500, 0, -500);
 		glTexCoord2f(1, 1); glVertex3f(500, 500, -500);
 		glTexCoord2f(0, 1); glVertex3f(-500, 500, -500);
-		glColor3f(0.0, 1.0, 1.0);
+		glColor3f(1.0, 1.0, 1.0);
 
 		//Right wall
 		glNormal3f(-1.0f, 0.0f, 0.0f);
@@ -136,7 +137,7 @@ static void o_walls() {
 	glEnable(GL_TEXTURE_2D);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
 	glColor3f(1, 1, 1);
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glBindTexture(GL_TEXTURE_2D, texture[14]);
 
 	glBegin(GL_QUADS);
 
@@ -148,25 +149,16 @@ static void o_walls() {
 	glTexCoord2f(1, 0); glVertex3f(505, -5, -505);
 	glTexCoord2f(1, 1); glVertex3f(505, -5, 505);
 	glTexCoord2f(0, 1); glVertex3f(-505, -5, 505);
-	glColor3f(1.0, 0.0, 1.0);
-
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
+	glColor3f(1.0, 1.0, 1.0);
 
 	/* Ceiling */
-	glEnable(GL_TEXTURE_2D);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
-	glColor3f(1, 1, 1);
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
-
-	glBegin(GL_QUADS);
 
 	glNormal3f(0.0f, -1.0f, 0.0f);
 	glTexCoord2f(0, 0); glVertex3f(-505, 505, -505);
 	glTexCoord2f(1, 0); glVertex3f(505, 505, -505);
 	glTexCoord2f(1, 1); glVertex3f(505, 505, 505);
 	glTexCoord2f(0, 1); glVertex3f(-505, 505, 505);
-	glColor3f(0.0, 1.0, 1.0);
+	glColor3f(1.0, 1.0, 1.0);
 
 	/* Walls */
 	//front wall
@@ -185,7 +177,7 @@ static void o_walls() {
 	glTexCoord2f(1, 0); glVertex3f(505, -5, -505);
 	glTexCoord2f(1, 1); glVertex3f(505, 505, -505);
 	glTexCoord2f(0, 1); glVertex3f(-505, 505, -505);
-	glColor3f(0.0, 1.0, 1.0);
+	glColor3f(1.0, 1.0, 1.0);
 
 	//Right wall
 	glNormal3f(-1.0f, 0.0f, 0.0f);
@@ -201,6 +193,73 @@ static void o_walls() {
 	glTexCoord2f(1, 0); glVertex3f(-505, -5, 505);
 	glTexCoord2f(1, 1); glVertex3f(-505, -5, -505);
 	glTexCoord2f(0, 1); glVertex3f(-505, 505, -505);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+}
+
+static void space() {
+
+	//Enable textures
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[15]);
+
+	glBegin(GL_QUADS);
+
+	/* Floor */
+
+	glColor3f(1.0, 1.0, 1.0);
+	glNormal3f(0.0f, 1.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(-2000, -2000, -2000);
+	glTexCoord2f(1, 0); glVertex3f(2000, -2000, -2000);
+	glTexCoord2f(1, 1); glVertex3f(2000, -2000, 2000);
+	glTexCoord2f(0, 1); glVertex3f(-2000, -2000, 2000);
+	glColor3f(1.0, 1.0, 1.0);
+
+	/* Ceiling */
+
+	glNormal3f(0.0f, -1.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(-2000, 2000, -2000);
+	glTexCoord2f(1, 0); glVertex3f(2000, 2000, -2000);
+	glTexCoord2f(1, 1); glVertex3f(2000, 2000, 2000);
+	glTexCoord2f(0, 1); glVertex3f(-2000, 2000, 2000);
+	glColor3f(1.0, 1.0, 1.0);
+
+	/* Walls */
+	//front wall
+
+	glNormal3f(0.0f, 0.0f, -1.0f);
+	glTexCoord2f(0, 0); glVertex3f(-2000, -2000, 2000);
+	glTexCoord2f(1, 0); glVertex3f(2000, -2000, 2000);
+	glTexCoord2f(1, 1); glVertex3f(2000, 2000, 2000);
+	glTexCoord2f(0, 1); glVertex3f(-2000, 2000, 2000);
+	glColor3f(1.0, 1.0, 1.0);
+
+	//Back wall
+
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(0, 0); glVertex3f(-2000, -2000, -2000);
+	glTexCoord2f(1, 0); glVertex3f(2000, -2000, -2000);
+	glTexCoord2f(1, 1); glVertex3f(2000, 2000, -2000);
+	glTexCoord2f(0, 1); glVertex3f(-2000, 2000, -2000);
+	glColor3f(1.0, 1.0, 1.0);
+
+	//Right wall
+	glNormal3f(-1.0f, 0.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(2000, 2000, 2000);
+	glTexCoord2f(1, 0); glVertex3f(2000, -2000, 2000);
+	glTexCoord2f(1, 1); glVertex3f(2000, -2000, -2000);
+	glTexCoord2f(0, 1); glVertex3f(2000, 2000, -2000);
+	glColor3f(1.0, 1.0, 1.0);
+
+	//Left wall
+	glNormal3f(1.0f, 0.0f, 0.0f);
+	glTexCoord2f(0, 0); glVertex3f(-2000, 2000, 2000);
+	glTexCoord2f(1, 0); glVertex3f(-2000, -2000, 2000);
+	glTexCoord2f(1, 1); glVertex3f(-2000, -2000, -2000);
+	glTexCoord2f(0, 1); glVertex3f(-2000, 2000, -2000);
 
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
@@ -337,71 +396,8 @@ static void points3(float x, float y, float z, float cant) {
 
 	glEnd();
 }
-/*
-static void points4(double x, double y, double z) {
-	glBegin(GL_QUADS);
-	glNormal3d(0, 0, 1);
-	glTexCoord2d(0, 0);
-	glVertex3d(-x, y, z);
-	glTexCoord2d(0, 1);
-	glVertex3d(-x, -y, z);
-	glTexCoord2d(1, 1);
-	glVertex3d(x, -y, z);
-	glTexCoord2d(1, 0);
-	glVertex3d(x, y, z);
 
-	glNormal3d(1, 0, 0);
-	glTexCoord2d(0, 0);
-	glVertex3d(x, y, z);
-	glTexCoord2d(0, 1);
-	glVertex3d(x, -y, z);
-	glTexCoord2d(1, 1);
-	glVertex3d(x, -y, -z);
-	glTexCoord2d(1, 0);
-	glVertex3d(x, y, -z);
 
-	glNormal3d(0, 0, -1);
-	glTexCoord2d(1, 0);
-	glVertex3d(x, y, -z);
-	glTexCoord2d(1, 1);
-	glVertex3d(x, -y, -z);
-	glTexCoord2d(0, 1);
-	glVertex3d(-x, -y, -z);
-	glTexCoord2d(0, 0);
-	glVertex3d(-x, y, -z);
-
-	glNormal3d(-1, 0, 0);
-	glTexCoord2d(0, 1);
-	glVertex3d(-x, y, -z);
-	glTexCoord2d(0, 0);
-	glVertex3d(-x, -y, -z);
-	glTexCoord2d(1, 0);
-	glVertex3d(-x, -y, z);
-	glTexCoord2d(1, 1);
-	glVertex3d(-x, y, z);
-
-	glNormal3d(0, 1, 0);
-	glTexCoord2d(0, 0);
-	glVertex3d(-x, y, z);
-	glTexCoord2d(1, 0);
-	glVertex3d(x, y, z);
-	glTexCoord2d(1, 1);
-	glVertex3d(x, y, -z);
-	glTexCoord2d(0, 1);
-	glVertex3d(-x, y, -z);
-
-	glNormal3d(0, -1, 0);
-	glTexCoord2d(0, 1);
-	glVertex3d(-x, -y, -z);
-	glTexCoord2d(1, 1);
-	glVertex3d(x, -y, -z);
-	glTexCoord2d(1, 0);
-	glVertex3d(x, -y, z);
-	glTexCoord2d(0, 0);
-	glVertex3d(-x, -y, z);
-	glEnd();
-}
-*/
 static void tvstand(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 
 	glTranslated(x, y, z);
@@ -509,7 +505,7 @@ static void seat(double x, double y, double z, double dx, double dy, double dz, 
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
 
 	glColor3d(1, 1, 1);
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glBindTexture(GL_TEXTURE_2D, texture[12]);
 	glTranslated(-l - 2, 0, 0);
 	points(2, h, h);
 	glTranslated(2 * l + 4, 0, 0);
@@ -528,7 +524,7 @@ static void seat(double x, double y, double z, double dx, double dy, double dz, 
 
 	glTranslated(0, h - i, -(h - i) + 2);
 	glRotated(90, -1, 0, 0);
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glBindTexture(GL_TEXTURE_2D, texture[12]);
 	points(l, 2, h - i);
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
 	glTranslated(0, -c, 3);
@@ -790,7 +786,7 @@ static void bookcase(double x, double y, double z, double dx, double dy, double 
 	glEnable(GL_TEXTURE_2D);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
 	glColor3f(1, 1, 1);
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glBindTexture(GL_TEXTURE_2D, texture[13]);
 
 	glBegin(GL_QUADS);
 
@@ -971,6 +967,7 @@ void display()
 
 	walls();
 	if (w) { o_walls(); }
+	space();
 
 	couch(-100, 37.5, 0, 3, 1, 1.5, 0, 0, 0, 0);
 	seat(100, -20, -27.5, 0.5, 1, 1, 95, 1, 0, 0);
@@ -1134,8 +1131,8 @@ int main(int argc, char* argv[])
 	glutKeyboardFunc(key);
 	glutIdleFunc(idle);
 	//Load textures
-	texture[0] = LoadTexBMP("cushion.bmp");
-	texture[1] = LoadTexBMP("cushion2.bmp");
+	texture[0] = LoadTexBMP("blue-fabric.bmp");
+	texture[1] = LoadTexBMP("brown-fabric.bmp");
 	texture[2] = LoadTexBMP("tv.bmp");
 	texture[3] = LoadTexBMP("the-office.bmp");
 	texture[4] = LoadTexBMP("vector-wood-texture.bmp");
@@ -1146,6 +1143,10 @@ int main(int argc, char* argv[])
 	texture[9] = LoadTexBMP("bookshelf.bmp");
 	texture[10] = LoadTexBMP("wall.bmp");
 	texture[11] = LoadTexBMP("hardwood-floor.bmp");
+	texture[12] = LoadTexBMP("chair-fabric.bmp");
+	texture[13] = LoadTexBMP("medium-wood.bmp");
+	texture[14] = LoadTexBMP("brick.bmp");
+	texture[15] = LoadTexBMP("stars.bmp");
 	//  Pass control to GLUT so it can interact with the user
 	ErrCheck("init");
 	glutMainLoop();
