@@ -49,7 +49,7 @@ double Cz = 0.0;
 
 //Texture values
 int mode = 0;    //  Texture mode
-unsigned int texture[9];  //  Texture names
+unsigned int texture[10];  //  Texture names
 
 //Draw the room walls
 static void walls() {
@@ -362,8 +362,6 @@ static void tvstand(double x, double y, double z, double dx, double dy, double d
 	glTranslated(0, -0.4f * 70, 0);
 	points2(0.45f * 70, 0.02f * 70, 0.65f * 70, 1);
 	glPopMatrix();
-	//yInc = 56;
-	glColor3d(1, 1, 1);
 }
 
 static void couch(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
@@ -661,6 +659,92 @@ static void net(double x, double y, double z, double dx, double dy, double dz, d
 	glDisable(GL_TEXTURE_2D);
 }
 
+static void bookcase(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
+	//  Set specular color to white
+	float white[] = { 1,1,1,1 };
+	float black[] = { 0,0,0,1 };
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
+
+	// Translations
+	glTranslated(x, y, z);
+	glRotated(th, rx, ry, rz);
+	glScaled(dx, dy, dz);
+
+	//Enable textures
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[9]);
+
+	glBegin(GL_QUADS);
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	int x1 = 100;
+	int y1 = 20;
+	int y2 = 200;
+	int z1 = 50;
+	int z2 = 120;
+	
+	//Bottom
+	glNormal3f(0.0f, 0.0f, -1.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y1, -z2);
+	glTexCoord2f(5, 0); glVertex3f(x1, y1, -z2);
+	glTexCoord2f(5, 1); glVertex3f(x1, y2, -z2);
+	glTexCoord2f(0, 1); glVertex3f(-x1, y2, -z2);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+
+	glBegin(GL_QUADS);
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	
+	//back side
+	glNormal3f(0.0f, 0.0f, 1.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y1, -z1);
+	glTexCoord2f(5, 0); glVertex3f(x1, y1, -z1);
+	glTexCoord2f(5, 1); glVertex3f(x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(-x1, y2, -z1);
+	
+
+	//Left side
+	glNormal3f(-1.0f, 0.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y1, -z2);
+	glTexCoord2f(1, 0); glVertex3f(-x1, y2, -z2);
+	glTexCoord2f(1, 1); glVertex3f(-x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(-x1, y1, -z1);
+
+	//Right side
+	glNormal3f(1.0f, 0.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(x1, y1, -z2);
+	glTexCoord2f(1, 0); glVertex3f(x1, y2, -z2);
+	glTexCoord2f(1, 1); glVertex3f(x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(x1, y1, -z1);
+
+	//Top
+	glNormal3f(0.0f, 1.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y2, -z2);
+	glTexCoord2f(1, 0); glVertex3f(-x1, y2, -z1);
+	glTexCoord2f(1, 1); glVertex3f(x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(x1, y2, -z2);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+}
+
 /*
  *  Draw vertex in polar coordinates with normal
  */
@@ -766,6 +850,8 @@ void display()
 	tv(0, -3.5, 40, 0.75 , 1, 0.75, 0, 0, 0, 0);
 	table(0, -9, -900, 1.5, 1, 1, 0, 0, 0, 0);
 	net(10, 0, 0, 1, 1, 1, 90, 0, 1, 0);
+	bookcase(285, -110, -25, 1, 1, 1, 90, 0, 1, 0);
+
 
 	ErrCheck("display");
 
@@ -929,6 +1015,7 @@ int main(int argc, char* argv[])
 	texture[6] = LoadTexBMP("tv_screen.bmp");
 	texture[7] = LoadTexBMP("net.bmp");
 	texture[8] = LoadTexBMP("pingtable.bmp");
+	texture[9] = LoadTexBMP("bookshelf.bmp");
 	//  Pass control to GLUT so it can interact with the user
 	ErrCheck("init");
 	glutMainLoop();
