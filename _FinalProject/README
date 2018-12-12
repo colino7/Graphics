@@ -1,13 +1,31 @@
-Final Project - Living Room
+Final Project - The Living Room: It's for living
 
 Colin O'Connell
 CSCI4229 Fall 2018
 
-To run, you can do a normal make.
+To run: you can do a normal make ("make room").
+
+Welcome to the living room! It's a great place to...live.
+In the living room, you can find beautiful hardwood floors. There is a comfy TV viewing area in the front, complete with a long microfiber couch, a comfy armchair, an exotic ottoman, a classic wood side table, a TV stand, and a huge flat screen LCD screen. Check out what's on cable by pressing 't' on your remote (or keyboard). In the back you'll find a huge oak bookcase with a super awesome ping pong table (complete with ping pong ball). Revolving around the scene is our own little personal Sun that shows off the great lighting of the whole scene.
+Turning on the walls (with 'w') shows you the beautiful textured blue walls in the room. Zooming out will show you the brick exterior against the crazy cloudy sky scene.
+Pressing 'f' puts you in the scene! Use the ('y','g','h','j') keys to move around the scene from what I like to call "first dog" point of view (since you're a little lower). Pressing 'p' will change the view from orthogonal to perspective for a cool way of looking at the room (best used from angles further away - hit '0' and then 'p').
+
 
 Key bindings
-  ESC           Exit
   arrows        Change view angle
   PgDn/PgUp     Zoom in and out
+  f             Toggle first person view
+  l             Toggle lighting
+  t             Turn the tv on/off (and check out a great episode of The Office)
+  w             Toggle the walls
+  m             Toggle the light movement
+  [/]           Decrease/increase the light elevation
+  y             Move forward in first person
+  g             Rotate view left in first person
+  h             Move backwards in first person
+  j             Rotate view right in first person
+  0             Reset view angle
+  p             Switch view mode between perspective and orthogonal
+  ESC           Exit
   
-Notes: I realize I haven't done much. I don't have the walls up right now just so I can focus on the objects and right now the tv isn't working quite right. I still plan on putting in a lot more detailed objects like an armchair (in progess), tables with lamps, tv (in progress), pictures, and other miscellaneous items. I also need to integrate first person collisions.
+I put a lot of work into getting crisp looking objects and placing them. I believe this is worth an A because it really shows a lot of different aspects of computer graphics, including the well-executed lighting, beautiful texturing, multiple view modes, complex objects, and fun aspects like being able to turn on the TV.
