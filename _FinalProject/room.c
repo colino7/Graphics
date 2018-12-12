@@ -1,15 +1,19 @@
 /*	Colin O'Connell Final Project
 
+	** Some code taken from Professor Schreüder's example files
 	** Some code taken from https://www.codeproject.com/Articles/987274/%2FArticles%2F987274%2FMy-first-OpenGL-Project-A-D-House
+
  */
 #include "CSCIx229.h"
 
-int th = 45.0;      //  Azimuth of view angle
-int ph = 45.0;      //  Elevation of view angle
-int move = 1;       //  Move light
-int light = 1;      //  Lighting
-double asp = 1;     //  Aspect ratio
-double dim = 500.0;   //  Size of world
+int th = 45.0;      // Azimuth of view angle
+int ph = 45.0;      // Elevation of view angle
+int move = 1;       // Move light
+int light = 1;      // Lighting
+double asp = 1;     // Aspect ratio
+double dim = 500.0; // Size of world
+
+int m = 1;			// Projection mode
 
 // Light values
 int one = 1;		// Unit value
@@ -26,32 +30,32 @@ int shininess = 0;  // Shininess (power of two)
 float shiny = 1;	// Shininess (value)
 int inc = 10;		// Ball increment
 
-int fp = 0;			//  First person
+int fp = 0;			// First person
 
-int tv_on = 0;
-int w = 0;
+int tv_on = 0;		// Turn the tv on
+int w = 0;			// Turn the walls on
 
 //  Macro for sin & cos in degrees
 #define Cos(th) cos(3.1415926/180*(th))
 #define Sin(th) sin(3.1415926/180*(th))
 
-// rotation variable for first person
+// Rotation variable for first person
 int rotation = 0.0;
 
-// eye coordinates
-double Ex = 0.0;
-double Ey = 0.0;
-double Ez = 5.0;
+// Eye coordinates
+double Ex = 70.0;
+double Ey = 70.0;
+double Ez = 70.0;
 
-// camera coordinates
+// Camera coordinates
 double Cx = 0.0;
 double Cz = 0.0;
 
-//Texture values
-int mode = 0;    //  Texture mode
-unsigned int texture[16];  //  Texture names
+// Texture values
+int mode = 0;    // Texture mode
+unsigned int texture[17];  // Texture names
 
-//Draw the room walls
+// Draw the room walls
 static void walls() {
 	
 	//Enable textures
@@ -62,7 +66,7 @@ static void walls() {
 
 	glBegin(GL_QUADS);
 
-	/* Floor */
+	//Floor
 	
 	glColor3f(1.0, 1.0, 1.0);
 	glNormal3f(0.0f, 1.0f, 0.0f);
@@ -84,7 +88,7 @@ static void walls() {
 
 		glBegin(GL_QUADS);
 
-		/* Ceiling */
+		//Ceiling
 		glNormal3f(0.0f, -1.0f, 0.0f);
 		glTexCoord2f(0, 0); glVertex3f(-500, 500, -500);
 		glTexCoord2f(1, 0); glVertex3f(500, 500, -500);
@@ -92,8 +96,9 @@ static void walls() {
 		glTexCoord2f(0, 1); glVertex3f(-500, 500, 500);
 		glColor3f(1.0, 1.0, 1.0);
 		
-		/* Walls */
-		//front wall
+		//Walls
+
+		//Front wall
 	
 		glNormal3f(0.0f, 0.0f, -1.0f);
 		glTexCoord2f(0, 0); glVertex3f(-500, 0, 500);
@@ -131,6 +136,7 @@ static void walls() {
 	}
 }
 
+// Draw the outside walls
 static void o_walls() {
 
 	//Enable textures
@@ -141,7 +147,7 @@ static void o_walls() {
 
 	glBegin(GL_QUADS);
 
-	/* Floor */
+	//Floor
 
 	glColor3f(1.0, 1.0, 1.0);
 	glNormal3f(0.0f, 1.0f, 0.0f);
@@ -151,7 +157,7 @@ static void o_walls() {
 	glTexCoord2f(0, 1); glVertex3f(-505, -5, 505);
 	glColor3f(1.0, 1.0, 1.0);
 
-	/* Ceiling */
+	// Ceiling
 
 	glNormal3f(0.0f, -1.0f, 0.0f);
 	glTexCoord2f(0, 0); glVertex3f(-505, 505, -505);
@@ -160,7 +166,7 @@ static void o_walls() {
 	glTexCoord2f(0, 1); glVertex3f(-505, 505, 505);
 	glColor3f(1.0, 1.0, 1.0);
 
-	/* Walls */
+	// Walls
 	//front wall
 
 	glNormal3f(0.0f, 0.0f, -1.0f);
@@ -198,7 +204,8 @@ static void o_walls() {
 	glDisable(GL_TEXTURE_2D);
 }
 
-static void space() {
+//Draw the surrounding sky
+static void sky() {
 
 	//Enable textures
 	glEnable(GL_TEXTURE_2D);
@@ -208,7 +215,7 @@ static void space() {
 
 	glBegin(GL_QUADS);
 
-	/* Floor */
+	//Bottom
 
 	glColor3f(1.0, 1.0, 1.0);
 	glNormal3f(0.0f, 1.0f, 0.0f);
@@ -218,7 +225,7 @@ static void space() {
 	glTexCoord2f(0, 1); glVertex3f(-2000, -2000, 2000);
 	glColor3f(1.0, 1.0, 1.0);
 
-	/* Ceiling */
+	//Top
 
 	glNormal3f(0.0f, -1.0f, 0.0f);
 	glTexCoord2f(0, 0); glVertex3f(-2000, 2000, -2000);
@@ -227,8 +234,7 @@ static void space() {
 	glTexCoord2f(0, 1); glVertex3f(-2000, 2000, 2000);
 	glColor3f(1.0, 1.0, 1.0);
 
-	/* Walls */
-	//front wall
+	//Front
 
 	glNormal3f(0.0f, 0.0f, -1.0f);
 	glTexCoord2f(0, 0); glVertex3f(-2000, -2000, 2000);
@@ -237,7 +243,7 @@ static void space() {
 	glTexCoord2f(0, 1); glVertex3f(-2000, 2000, 2000);
 	glColor3f(1.0, 1.0, 1.0);
 
-	//Back wall
+	//Back
 
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	glTexCoord2f(0, 0); glVertex3f(-2000, -2000, -2000);
@@ -246,7 +252,7 @@ static void space() {
 	glTexCoord2f(0, 1); glVertex3f(-2000, 2000, -2000);
 	glColor3f(1.0, 1.0, 1.0);
 
-	//Right wall
+	//Right
 	glNormal3f(-1.0f, 0.0f, 0.0f);
 	glTexCoord2f(0, 0); glVertex3f(2000, 2000, 2000);
 	glTexCoord2f(1, 0); glVertex3f(2000, -2000, 2000);
@@ -254,7 +260,7 @@ static void space() {
 	glTexCoord2f(0, 1); glVertex3f(2000, 2000, -2000);
 	glColor3f(1.0, 1.0, 1.0);
 
-	//Left wall
+	//Left
 	glNormal3f(1.0f, 0.0f, 0.0f);
 	glTexCoord2f(0, 0); glVertex3f(-2000, 2000, 2000);
 	glTexCoord2f(1, 0); glVertex3f(-2000, -2000, 2000);
@@ -265,6 +271,7 @@ static void space() {
 	glDisable(GL_TEXTURE_2D);
 }
 
+// First helper function for drawing some standard points
 static void points(double x, double y, double z) {
 	glBegin(GL_QUADS);
 	glNormal3d(0, 0, 1);
@@ -329,6 +336,8 @@ static void points(double x, double y, double z) {
 	glEnd();
 }
 
+
+// Second helper function
 static void points2(float x, float y, float z, float cant) {
 	float width = 2 * x;
 	float height = 2 * y;
@@ -381,6 +390,7 @@ static void points2(float x, float y, float z, float cant) {
 	glEnd();
 }
 
+// Third helper function
 static void points3(float x, float y, float z, float cant) {
 	glBegin(GL_QUADS);
 
@@ -397,7 +407,7 @@ static void points3(float x, float y, float z, float cant) {
 	glEnd();
 }
 
-
+// Draw the tv stand
 static void tvstand(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 
 	glTranslated(x, y, z);
@@ -445,6 +455,7 @@ static void tvstand(double x, double y, double z, double dx, double dy, double d
 	glPopMatrix();
 }
 
+// Draw the couch
 static void couch(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 	double h = 37;
 	double l = 40;
@@ -489,7 +500,7 @@ static void couch(double x, double y, double z, double dx, double dy, double dz,
 
 }
 
-
+// Draw the armchair
 static void seat(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 	double h = 37;
 	double l = 40;
@@ -534,7 +545,7 @@ static void seat(double x, double y, double z, double dx, double dy, double dz, 
 
 }
 
-
+// Draw the tv
 static void tv(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 	
 	//  Set specular color to white
@@ -619,6 +630,7 @@ static void tv(double x, double y, double z, double dx, double dy, double dz, do
 	glDisable(GL_TEXTURE_2D);
 }
 
+// Small helper function
 void p(double h){
 	GLUquadric *q = gluNewQuadric();
 	gluQuadricTexture(q, GL_TRUE);
@@ -630,6 +642,7 @@ void p(double h){
 	gluDeleteQuadric(q);
 }
 
+// Draw the ping pong table
 static void table(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 
 	// Translations
@@ -669,6 +682,7 @@ static void table(double x, double y, double z, double dx, double dy, double dz,
 
 }
 
+// Draw the ping pong table net
 static void net(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 	//  Set specular color to white
 	float white[] = { 1,1,1,1 };
@@ -743,6 +757,7 @@ static void net(double x, double y, double z, double dx, double dy, double dz, d
 	glDisable(GL_TEXTURE_2D);
 }
 
+// Draw the bookcase
 static void bookcase(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 	//  Set specular color to white
 	float white[] = { 1,1,1,1 };
@@ -829,6 +844,7 @@ static void bookcase(double x, double y, double z, double dx, double dy, double 
 	glDisable(GL_TEXTURE_2D);
 }
 
+// Draw the small side table
 static void smalltable(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
 
 	// Translations
@@ -868,6 +884,82 @@ static void smalltable(double x, double y, double z, double dx, double dy, doubl
 
 }
 
+// Draw the ottoman
+static void ottoman(double x, double y, double z, double dx, double dy, double dz, double th, double rx, double ry, double rz) {
+	//  Set specular color to white
+	float white[] = { 1,1,1,1 };
+	float black[] = { 0,0,0,1 };
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
+
+	// Translations
+	glTranslated(x, y, z);
+	glRotated(th, rx, ry, rz);
+	glScaled(dx, dy, dz);
+
+	//Enable textures
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode ? GL_REPLACE : GL_MODULATE);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, texture[16]);
+
+	glBegin(GL_QUADS);
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	int x1 = 23;
+	int y1 = 20;
+	int y2 = 30;
+	int z1 = 50;
+	int z2 = 70;
+
+	//Bottom
+	glNormal3f(0.0f, 0.0f, -1.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y1, -z2);
+	glTexCoord2f(5, 0); glVertex3f(x1, y1, -z2);
+	glTexCoord2f(5, 1); glVertex3f(x1, y2, -z2);
+	glTexCoord2f(0, 1); glVertex3f(-x1, y2, -z2);
+
+	//back side
+	glNormal3f(0.0f, 0.0f, 1.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y1, -z1);
+	glTexCoord2f(5, 0); glVertex3f(x1, y1, -z1);
+	glTexCoord2f(5, 1); glVertex3f(x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(-x1, y2, -z1);
+
+
+	//Left side
+	glNormal3f(-1.0f, 0.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y1, -z2);
+	glTexCoord2f(1, 0); glVertex3f(-x1, y2, -z2);
+	glTexCoord2f(1, 1); glVertex3f(-x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(-x1, y1, -z1);
+
+	//Right side
+	glNormal3f(1.0f, 0.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(x1, y1, -z2);
+	glTexCoord2f(1, 0); glVertex3f(x1, y2, -z2);
+	glTexCoord2f(1, 1); glVertex3f(x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(x1, y1, -z1);
+
+	//Top
+	glNormal3f(0.0f, 1.0f, 0.0f);
+
+	glTexCoord2f(0, 0); glVertex3f(-x1, y2, -z2);
+	glTexCoord2f(1, 0); glVertex3f(-x1, y2, -z1);
+	glTexCoord2f(1, 1); glVertex3f(x1, y2, -z1);
+	glTexCoord2f(0, 1); glVertex3f(x1, y2, -z2);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+}
+
+
 /*
  *  Draw vertex in polar coordinates with normal
  */
@@ -882,6 +974,7 @@ static void Vertex(double th, double ph)
 	glVertex3d(x, y, z);
 }
 
+// Draw the light ball
 static void ball(double x, double y, double z, double r)
 {
 	int th, ph;
@@ -892,6 +985,40 @@ static void ball(double x, double y, double z, double r)
 	//  Offset, scale and rotate
 	glTranslated(x, y, z);
 	glScaled(r, r, r);
+	//  White ball
+	glColor3f(1, 1, 1);
+	glMaterialf(GL_FRONT, GL_SHININESS, shiny);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, yellow);
+	glMaterialfv(GL_FRONT, GL_EMISSION, Emission);
+	//  Bands of latitude
+	for (ph = -90; ph < 90; ph += inc)
+	{
+		glBegin(GL_QUAD_STRIP);
+		for (th = 0; th <= 360; th += 2 * inc)
+		{
+			Vertex(th, ph);
+			Vertex(th, ph + inc);
+		}
+		glEnd();
+	}
+	//  Undo transofrmations
+	glPopMatrix();
+}
+
+// Draw the ping pong ball
+static void pingball(double x, double y, double z, double dx, double dy, double dz, double th1, double rx, double ry, double rz) {
+	int th, ph;
+	float yellow[] = { 1.0,1.0,0.0,1.0 };
+	float Emission[] = { 0.0,0.0,0.01*emission,1.0 };
+
+	// Translations
+	glTranslated(x, y, z);
+	glRotated(th1, rx, ry, rz);
+	glScaled(dx, dy, dz);
+
+	//  Save transformation
+	glPushMatrix();
+
 	//  White ball
 	glColor3f(1, 1, 1);
 	glMaterialf(GL_FRONT, GL_SHININESS, shiny);
@@ -924,11 +1051,29 @@ void display()
 	//  Undo previous transformations
 	glLoadIdentity();
 
-	//  Perspective - set eye position
-	double Ex = -2 * dim*Sin(th)*Cos(ph);
-	double Ey = +2 * dim        *Sin(ph);
-	double Ez = +2 * dim*Cos(th)*Cos(ph);
-	gluLookAt(Ex, Ey, Ez, 0, 0, 0, 0, Cos(ph), 0);
+
+	//First person
+	if (fp) {
+		//Adjust camera variables based on rotation
+		Cx = +2 * dim*Sin(rotation);
+		Cz = -2 * dim*Cos(rotation);
+		//Define the viewing transformation
+		gluLookAt(Ex, Ey, Ez, Cx + Ex, Ey, Cz + Ez, 0, 1, 0);
+	}
+	else {
+		//Perspective - adjust the eye position variables
+		if (m) {
+			double Ex = -2 * dim*Sin(th)*Cos(ph);
+			double Ey = +2 * dim        *Sin(ph);
+			double Ez = +2 * dim*Cos(th)*Cos(ph);
+			gluLookAt(Ex, Ey, Ez, 0, 0, 0, 0, Cos(ph), 0);
+		}
+		//Orthogonal - set view angle (like normal)
+		else {
+			glRotatef(ph, 1, 0, 0);
+			glRotatef(th, 0, 1, 0);
+		}
+	}
 
 	//  Flat or smooth shading
 	glShadeModel(smooth ? GL_SMOOTH : GL_FLAT);
@@ -965,9 +1110,11 @@ void display()
 	else
 		glDisable(GL_LIGHTING);
 
+
+	//Draw all the objects
 	walls();
 	if (w) { o_walls(); }
-	space();
+	sky();
 
 	couch(-100, 37.5, 0, 3, 1, 1.5, 0, 0, 0, 0);
 	seat(100, -20, -27.5, 0.5, 1, 1, 95, 1, 0, 0);
@@ -977,6 +1124,8 @@ void display()
 	net(10, 0, 0, 1, 1, 1, 90, 0, 1, 0);
 	bookcase(285, -110, -25, 1, 1, 1, 90, 0, 1, 0);
 	smalltable(85, 50, -625, 0.25, 1, 0.5, 0, 0, 0, 0);
+	pingball(-220, 39.5, 520, 5, 5, 10, 0, 0, 0, 0);
+	ottoman(0, -40, -30, 1, 1, 1, 0, 0, 0, 0);
 
 	ErrCheck("display");
 
@@ -1003,29 +1152,31 @@ void idle()
  */
 void special(int key, int x, int y)
 {
-	//  Right arrow key - increase angle by 5 degrees
-	if (key == GLUT_KEY_RIGHT)
-		th += 5;
-	//  Left arrow key - decrease angle by 5 degrees
-	else if (key == GLUT_KEY_LEFT)
-		th -= 5;
-	//  Up arrow key - increase elevation by 5 degrees
-	else if (key == GLUT_KEY_UP)
-		ph += 5;
-	//  Down arrow key - decrease elevation by 5 degrees
-	else if (key == GLUT_KEY_DOWN)
-		ph -= 5;
-	//  PageUp key - increase dim
-	else if (key == GLUT_KEY_PAGE_DOWN)
-		dim += 5;
-	//  PageDown key - decrease dim
-	else if (key == GLUT_KEY_PAGE_UP && dim > 1)
-		dim -= 5;
-	//  Keep angles to +/-360 degrees
-	th %= 360;
-	ph %= 360;
+	if (!fp) { //for first person
+		//  Right arrow key - increase angle by 5 degrees
+		if (key == GLUT_KEY_RIGHT)
+			th += 5;
+		//  Left arrow key - decrease angle by 5 degrees
+		else if (key == GLUT_KEY_LEFT)
+			th -= 5;
+		//  Up arrow key - increase elevation by 5 degrees
+		else if (key == GLUT_KEY_UP)
+			ph += 5;
+		//  Down arrow key - decrease elevation by 5 degrees
+		else if (key == GLUT_KEY_DOWN)
+			ph -= 5;
+		//  PageUp key - increase dim
+		else if (key == GLUT_KEY_PAGE_DOWN)
+			dim += 5;
+		//  PageDown key - decrease dim
+		else if (key == GLUT_KEY_PAGE_UP && dim > 1)
+			dim -= 5;
+		//  Keep angles to +/-360 degrees
+		th %= 360;
+		ph %= 360;
+	}
 	//  Update projection
-	Project(45, asp, dim);
+	Project(45, asp, dim, fp, m);
 	//  Tell GLUT it is necessary to redisplay the scene
 	glutPostRedisplay();
 }
@@ -1038,9 +1189,10 @@ void key(unsigned char ch, int x, int y)
 	//  Exit on ESC
 	if (ch == 27)
 		exit(0);
-	//  Reset view angle
-	else if (ch == '0')
-		th = ph = 0;
+	//  Toggle first person
+	else if (ch == 'f') {
+		fp = 1 - fp;
+	}
 	//  Toggle lighting
 	else if (ch == 'l')
 		light = 1 - light;
@@ -1050,46 +1202,50 @@ void key(unsigned char ch, int x, int y)
 	//  Toggle the walls
 	else if (ch == 'w')
 		w = 1 - w;
-	//  Toggle texture mode
-   else if (ch == 't')
-      mode = 1-mode;
 	//  Toggle light movement
 	else if (ch == 'm')
 		move = 1 - move;
 	//  Light elevation
 	else if (ch == '[')
-		ylight -= 0.1;
+		ylight -= 10;
 	else if (ch == ']')
-		ylight += 0.1;
-	//  Ambient level
-	else if (ch == 'a' && ambient > 0)
-		ambient -= 5;
-	else if (ch == 's' && ambient < 100)
-		ambient += 5;
-	//  Diffuse level
-	else if (ch == 'd' && diffuse > 0)
-		diffuse -= 5;
-	else if (ch == 'f' && diffuse < 100)
-		diffuse += 5;
-	//  Specular level
-	else if (ch == 'g' && specular > 0)
-		specular -= 5;
-	else if (ch == 'h' && specular < 100)
-		specular += 5;
-	//  Emission level
-	else if (ch == 'j' && emission > 0)
-		emission -= 5;
-	else if (ch == 'k' && emission < 100)
-		emission += 5;
-	//  Shininess level
-	else if (ch == 'z' && shininess > -1)
-		shininess -= 1;
-	else if (ch == 'x' && shininess < 7)
-		shininess += 1;
+		ylight += 10;
+	if (fp) { //only when in first person
+		//Update eye variables based on camera variables
+		double dt = 0.05;
+		//Move 'forward'
+		if (ch == 'i') {
+			Ex += Cx * dt;
+			Ez += Cz * dt;
+		}
+		//Rotate view left
+		else if (ch == 'j') {
+			rotation -= 3;
+		}
+		//Move 'backward'
+		else if (ch == 'k') {
+			Ex -= Cx * dt;
+			Ez -= Cz * dt;
+		}
+		//Rotate view right
+		else if (ch == 'l') {
+			rotation += 3;
+		}
+		//Keep angles to +/-360 degrees
+		rotation %= 360;
+	}
+	else { //when not in first person mode
+		//  Reset view angle
+		if (ch == '0')
+			th = ph = 45;
+		//Switch display mode
+		else if (ch == 'p')
+			m = 1 - m;
+	}
 	//  Translate shininess power to value (-1 => 0)
 	shiny = shininess < 0 ? 0 : pow(2.0, shininess);
 	//  Reproject
-	Project(45, asp, dim);
+	Project(45, asp, dim, fp, m);
 	//  Animate if requested
 	glutIdleFunc(move ? idle : NULL);
 	//  Tell GLUT it is necessary to redisplay the scene
@@ -1106,7 +1262,7 @@ void reshape(int width, int height)
 	//  Set the viewport to the entire window
 	glViewport(0, 0, width, height);
 	//  Set projection
-	Project(45, asp, dim);
+	Project(45, asp, dim, fp, m);
 }
 
 /*
@@ -1146,7 +1302,8 @@ int main(int argc, char* argv[])
 	texture[12] = LoadTexBMP("chair-fabric.bmp");
 	texture[13] = LoadTexBMP("medium-wood.bmp");
 	texture[14] = LoadTexBMP("brick.bmp");
-	texture[15] = LoadTexBMP("stars.bmp");
+	texture[15] = LoadTexBMP("sky.bmp");
+	texture[16] = LoadTexBMP("ottoman.bmp");
 	//  Pass control to GLUT so it can interact with the user
 	ErrCheck("init");
 	glutMainLoop();
