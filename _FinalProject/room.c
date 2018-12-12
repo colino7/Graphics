@@ -1214,21 +1214,21 @@ void key(unsigned char ch, int x, int y)
 		//Update eye variables based on camera variables
 		double dt = 0.05;
 		//Move 'forward'
-		if (ch == 'i') {
+		if (ch == 'y') {
 			Ex += Cx * dt;
 			Ez += Cz * dt;
 		}
 		//Rotate view left
-		else if (ch == 'j') {
+		else if (ch == 'g') {
 			rotation -= 3;
 		}
 		//Move 'backward'
-		else if (ch == 'k') {
+		else if (ch == 'h') {
 			Ex -= Cx * dt;
 			Ez -= Cz * dt;
 		}
 		//Rotate view right
-		else if (ch == 'l') {
+		else if (ch == 'j') {
 			rotation += 3;
 		}
 		//Keep angles to +/-360 degrees
